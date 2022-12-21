@@ -35,19 +35,6 @@
 
 	</script>
 
-	<script type="text/javascript">
-		console.log(`
-
-			🅷🅰🅲🅺🅴🆁
-			🅹🅰🅽🅶🅰🅽
-			🅼🅴🅽🆈🅴🆁🅰🅽🅶
-
-			`);
-		console.log('Hacker jangan menyerang !!');
-	</script>
-
-
-
 	<?php
 
 	error_reporting(0);
