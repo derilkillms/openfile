@@ -127,11 +127,12 @@
 	echo windisk();
 	echo "<br>";
 
-
+	echo "<br>";
+	$basefile = explode("/",$_SERVER['SCRIPT_NAME']);
 	// echo path();
 	$path = explode("/",path());
 
-	echo '<a href="openfile.php"><li class="fa fa-home"></li></a> ';
+	echo '<a href="'.$basefile[count($basefile)-1].'"><li class="fa fa-home"></li></a> ';
 	foreach ($path as $key => $value) {
 		if ($key>0) {
 			$temp_dir .= $path[$key-1].'/';
