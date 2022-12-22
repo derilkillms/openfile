@@ -52,7 +52,7 @@
 
 	if (strval($_SESSION['password'])!=$password) {
 		echo '<form action="" method="post" >';
-		echo '<input type="text" name="password" size="50"> <input type="submit" id="_upl" value="Login"></form>';
+		echo '<input type="password" name="password" size="50"> <input type="submit" id="_upl" value="Login"></form>';
 		die();
 	}
 
