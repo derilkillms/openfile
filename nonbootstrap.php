@@ -195,7 +195,7 @@
 		echo '<div class="col-sm-4"><input type="submit" class="btn btn-primary" name="" value="Edit"/><br></div>
 		</form> 
 		<div class="col-sm-4"><button class="btn btn-success" onclick="addUrlParameter('."'act','download'".')">Download</button>
-		<button class="btn btn-danger" onclick="deleteFile('."'act','delete'".');">delete</button></div>
+		<button class="btn btn-danger" onclick="deleteFile('."'act','delete'".');">Delete</button></div>
 		</div>';
 	}
 
